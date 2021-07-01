@@ -41,13 +41,10 @@ This command should create an output file containing following sentence "I love 
 
 To start the venv navigate to the repository in your terminal and run following command 
 
-`source env/bin/active`
+`conda activate env`
 
 To use the pdfparser run following command 
 
-`python3 pdfparser.py [your args here]`
+`conda deactivate`
 
-Once finished, run the following line
-
-`deactivate`
 

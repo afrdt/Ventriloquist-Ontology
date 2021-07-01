@@ -3,17 +3,16 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 
 ## Installation
 1. Install most recent version of [python](https://www.python.org)
-2. 
+2. Be sure to run the command files inside of the python directory
 3. Once python is install type in the following commands in your terminal 
-4. 
 
-`sudo pip3 install virtualenv`
+`sudo pip3 install venv`
 
-6. Clone this repository
-7. In your terminal, navigate to this repo
-8. In the same terminal type and enter the following sequences of commands
+4. Clone this repository
+5. In your terminal, navigate to this repo
+6. In the same terminal type and enter the following sequences of commands
 
-`python3 virtualenv env`
+`python3 venv env`
 
 `source env/bin/activate`
 
@@ -21,8 +20,10 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 
 `mkdir output`
 
+`mkdir text`
 
-6. Try running the following commands
+
+7. Try running the following commands
 
 This command will show you the available command line arguments and their functions
 
@@ -32,7 +33,7 @@ This command should create an output file containing following sentence "I love 
 
 `python3 pdfparser.py -k love`
 
-7. When finished with parser, type the following command
+8. When finished with parser, type the following command
 
 `deactivate`
 
@@ -40,13 +41,10 @@ This command should create an output file containing following sentence "I love 
 
 To start the venv navigate to the repository in your terminal and run following command 
 
-`source env/bin/active`
+`conda activate env`
 
 To use the pdfparser run following command 
 
-`python3 pdfparser.py [your args here]`
+`conda deactivate`
 
-Once finished, run the following line
-
-`deactivate`
 

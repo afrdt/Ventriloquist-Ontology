@@ -20,9 +20,11 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 6. Try running the following commands
 
 This command will show you the available command line arguments and their functions
+
 `python3 pdfparser.py -h`
 
 This command should create an output file containing following sentence "I love to go swimming."
+
 `python3 pdfparser.py -k love`
 
 7. When finished with parser, type the following command

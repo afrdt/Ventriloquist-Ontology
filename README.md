@@ -21,6 +21,8 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 
 `mkdir output`
 
+`mkdir text`
+
 
 6. Try running the following commands
 

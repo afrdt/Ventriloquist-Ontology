@@ -9,25 +9,31 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
-from io import BytesIO
+from io import StringIO
 
 #PDF to text Function. 
 def pdf_to_text(path):
-    manager = PDFResourceManager()
-    retstr = BytesIO()
-    layout = LAParams(all_texts=True)
-    device = TextConverter(manager, retstr, laparams=layout)
-    filepath = open(path, 'rb')
-    interpreter = PDFPageInterpreter(manager, device)
+    rsrcmgr = PDFResourceManager()
+    retstr = StringIO()
+    codec = 'utf-8'
+    laparams = LAParams()
+    device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+    fp = open(path, 'rb')
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
+    password = ""
+    maxpages = 0
+    caching = True
+    pagenos=set()
 
-    for page in PDFPage.get_pages(filepath, check_extractable=True):
+    for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password,caching=caching, check_extractable=True):
         interpreter.process_page(page)
 
     text = retstr.getvalue()
-    filepath.close()
+
+    fp.close()
     device.close()
     retstr.close()
-    return text.decode("utf-8")
+    return text
 
 def main():
   
@@ -72,11 +78,13 @@ def main():
   for i in range(len(textList)):
     text_output = textDir + textList[i]
     extension = text_output[(len(text_output) - 3) : (len(text_output))]
+    print(extension)
     if extension == "txt":
       text_output = open(text_output)
       text_output = text_output.read()
     elif extension == "pdf":
-      text_output = pdf_to_text(text_output)  
+      print(text_output)
+      text_output = pdf_to_text(text_output)
     else:
       raise Exception("file must be either .pdf or .txt")
     for j in range(len(keywords)):
@@ -183,6 +191,8 @@ if __name__ == "__main__":
 
     # parse the arguments
     clargs = parse_args(defaults)
+
+    print("starting")
     
     # run main function
     main()

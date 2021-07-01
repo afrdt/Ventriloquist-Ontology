@@ -6,7 +6,7 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 2. Be sure to run the command files inside of the python directory
 3. Once python is install type in the following commands in your terminal 
 
-`sudo pip3 install virtualenv`
+`sudo pip3 install venv`
 
 4. Clone this repository
 5. In your terminal, navigate to this repo

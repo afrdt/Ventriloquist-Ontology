@@ -3,16 +3,21 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 
 ## Installation
 1. Install most recent version of [python](https://www.python.org)
-2. Once python is install type in the following command in your terminal `sudo pip install virtualenv`
-3. Clone this repository
-4. In your terminal, navigate to this repo
-5. In the same terminal type and enter the following sequences of commands
+2. 
+3. Once python is install type in the following commands in your terminal 
+4. 
+
+`sudo pip3 install virtualenv`
+
+6. Clone this repository
+7. In your terminal, navigate to this repo
+8. In the same terminal type and enter the following sequences of commands
 
 `python3 virtualenv env`
 
 `source env/bin/activate`
 
-`pip install pdfminer.six`
+`pip3 install pdfminer.six`
 
 `mkdir output`
 

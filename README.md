@@ -11,7 +11,7 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 4. In your terminal, navigate to this repo
 5. In the same terminal type and enter the following sequences of commands
 
-`python3 virtualenv env`
+`python3 venv env`
 
 `source env/bin/activate`
 

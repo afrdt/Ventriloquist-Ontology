@@ -2,40 +2,48 @@
 Art project exploring biopolitics and the algorithmic governance of the human body
 
 ## Installation
-1. Install most recent version of [python](https://www.python.org)
-2. Be sure to run the command files inside of the python directory
-3. Once python is install type in the following commands in your terminal 
+1. Install most recent version of [anaconda](https://www.anaconda.com)
+2. Install most recent version of [python](https://www.python.org)
+3. Run scripts inside of python application directory
+4. Type in the following command in your terminal to verify conda and python are installed
 
-`sudo pip3 install venv`
+`conda -V`
+
+`python3`
+
+3. If conda is not found, type in the following command in your terminal 
+
+`export PATH=~/opt/anaconda3/bin:$PATH`
 
 4. Clone this repository
 5. In your terminal, navigate to this repo
 6. In the same terminal type and enter the following sequences of commands
 
-`python3 venv env`
+`conda create --name env python=3.9`
 
-`source env/bin/activate`
+`source activate env`
 
-`pip3 install pdfminer.six`
+`conda install pip`
 
-`mkdir output`
+`sudo $(which pip) install pdfminer.six`
 
-`mkdir text`
+7. Verify pdfminer.six is install by running the following command and looking for **pdfminer.six**
 
+`conda list`
 
-7. Try running the following commands
+8. Try running the following commands
 
 This command will show you the available command line arguments and their functions
 
-`python3 pdfparser.py -h`
+`python3 parse.py -h`
 
 This command should create an output file containing following sentence "I love to go swimming."
 
-`python3 pdfparser.py -k love`
+`python3 parse.py -k love`
 
 8. When finished with parser, type the following command
 
-`deactivate`
+`conda deactivate`
 
 ## Running 
 

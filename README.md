@@ -41,7 +41,7 @@ This command should create an output file containing following sentence "I love 
 
 `python3 parse.py -t (name of text file / list of text files to be parsed, must include extension) -k love`
 
-8. When finished with parser, type the following command
+9. When finished with parser, type the following command
 
 `conda deactivate`
 

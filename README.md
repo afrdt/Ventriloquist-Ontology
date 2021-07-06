@@ -39,7 +39,7 @@ This command will show you the available command line arguments and their functi
 
 This command should create an output file containing following sentence "I love to go swimming."
 
-`python3 parse.py -k love`
+`python3 parse.py -t (name of text file / list of text files to be parsed, must include extension) -k love`
 
 8. When finished with parser, type the following command
 

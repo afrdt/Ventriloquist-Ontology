@@ -46,8 +46,11 @@ def main():
   # list of all pdfs
   textList = os.listdir(textDir)
 
-  # remove .blank
+  print(textList)
+
+  # remove . files
   textList.remove(".blank")
+  textList.remove(".DS_Store")
   
   # strings to be used for output filename
   textStr = ""

@@ -45,6 +45,9 @@ def main():
 
   # list of all pdfs
   textList = os.listdir(textDir)
+
+  # remove .blank
+  textList.remove(".blank")
   
   # strings to be used for output filename
   textStr = ""

@@ -16,8 +16,11 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 `export PATH=~/opt/anaconda3/bin:$PATH`
 
 4. Clone this repository
-5. In your terminal, navigate to this repo
-6. In the same terminal type and enter the following sequences of commands
+
+`git clone (repo link)`
+
+6. In your terminal, navigate to this repo
+7. In the same terminal type and enter the following sequences of commands
 
 `conda create --name env python=3.9`
 

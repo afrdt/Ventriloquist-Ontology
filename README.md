@@ -51,7 +51,7 @@ To start the venv navigate to the repository in your terminal and run following 
 
 `conda activate env`
 
-To use the pdfparser run following command 
+To exit the pdfparser run following command 
 
 `conda deactivate`
 

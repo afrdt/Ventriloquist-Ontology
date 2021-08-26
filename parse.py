@@ -46,9 +46,7 @@ def main():
   # list of all pdfs
   textList = os.listdir(textDir)
 
-  print(textList)
-
-  # remove . files
+  # remove .blank & .DS_Store
   textList.remove(".blank")
   textList.remove(".DS_Store")
   

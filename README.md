@@ -13,7 +13,7 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 
 3. If conda is not found, type in the following command in your terminal 
 
-`export PATH=~/opt/anaconda3/bin:$PATH`
+`export PATH=~/opt/anaconda3/bin`
 
 4. Clone this repository
 
@@ -28,7 +28,7 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 
 `conda install pip`
 
-`sudo $(which pip) install pdfminer.six`
+`sudo pip install pdfminer.six`
 
 7. Verify pdfminer.six is install by running the following command and looking for **pdfminer.six**
 

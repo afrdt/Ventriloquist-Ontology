@@ -17,7 +17,7 @@ Art project exploring biopolitics and the algorithmic governance of the human bo
 
 4. Clone this repository
 
-`git clone (repo link)`
+`git clone https://github.com/afrdt/Ventriloquist-Ontology.git`
 
 5. In your terminal, navigate to this repo
 6. In the same terminal type and enter the following sequences of commands

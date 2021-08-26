@@ -49,7 +49,6 @@ def main():
   # remove .blank & .DS_Store
   textList.remove(".blank")
   textList.remove(".DS_Store")
-
   
   # strings to be used for output filename
   textStr = ""

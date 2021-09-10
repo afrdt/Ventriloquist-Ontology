@@ -22,32 +22,33 @@
 
 BLEService servoService("19B10000-E8F2-537E-4F6C-D104768A1214"); // create service
 
-const int NUM_SERVOS = 4;
-const int STARTING_PIN = 9;
+const int NUM_SERVOS = 5;
+const int STARTING_PIN = 2;
 
 // Array of BLE Characteristics
 BLEByteCharacteristic sliderCharacteristics[] = {
   BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite),
-  BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1215", BLERead | BLEWrite),
-  BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1216", BLERead | BLEWrite),
-  BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1217", BLERead | BLEWrite),
+  BLEByteCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1215", BLERead | BLEWrite),
+  BLEByteCharacteristic("19B10003-E8F2-537E-4F6C-D104768A1216", BLERead | BLEWrite),
+  BLEByteCharacteristic("19B10004-E8F2-537E-4F6C-D104768A1217", BLERead | BLEWrite),
+  BLEByteCharacteristic("19B10005-E8F2-537E-4F6C-D104768A1218", BLERead | BLEWrite),
 };
 
 // Array of servos
-Servo servos[] = {Servo(), Servo(), Servo(), Servo()};
+Servo servos[] = {Servo(), Servo(), Servo(), Servo(), Servo()};
 
 
 void setup() {
-  Serial.begin(9600);
+  //  Serial.begin(9600);
   for (int i = 0; i < NUM_SERVOS;  i++) {
     servos[i].attach(STARTING_PIN + i);  // attaches the servo on pin 9 to the servo object
   }
 
-  while (!Serial);
-  
+  //  while (!Serial);
+
   // begin initialization
   if (!BLE.begin()) {
-    Serial.println("starting BLE failed!");
+    //    Serial.println("starting BLE failed!");
 
     while (1);
   }
@@ -61,7 +62,7 @@ void setup() {
   for (int i = 0; i < NUM_SERVOS;  i++) {
     servoService.addCharacteristic(sliderCharacteristics[i]);
   }
-  
+
   // add service
   BLE.addService(servoService);
 
@@ -78,11 +79,13 @@ void setup() {
   sliderCharacteristics[2].setValue(0);
   sliderCharacteristics[3].setEventHandler(BLEWritten, servo3Activated);
   sliderCharacteristics[3].setValue(0);
-  
+  sliderCharacteristics[4].setEventHandler(BLEWritten, servo4Activated);
+  sliderCharacteristics[4].setValue(0);
+
   // start advertising
   BLE.advertise();
 
-  Serial.println(("Bluetooth device active, waiting for connections..."));
+  //  Serial.println(("Bluetooth device active, waiting for connections..."));
 }
 
 void loop() {
@@ -92,21 +95,21 @@ void loop() {
 
 void blePeripheralConnectHandler(BLEDevice central) {
   // central connected event handler
-  Serial.print("Connected event, central: ");
-  Serial.println(central.address());
+  //  Serial.print("Connected event, central: ");
+  //  Serial.println(central.address());
 }
 
 void blePeripheralDisconnectHandler(BLEDevice central) {
   // central disconnected event handler
-  Serial.print("Disconnected event, central: ");
-  Serial.println(central.address());
+  //  Serial.print("Disconnected event, central: ");
+  //  Serial.println(central.address());
 }
 
 void servoActivated(int index) {
-  Serial.print("Servo ");
-  Serial.print(index);
-  Serial.print(", Value: ");
-  Serial.println(sliderCharacteristics[index].value());
+  //  Serial.print("Servo ");
+  //  Serial.print(index);
+  //  Serial.print(", Value: ");
+  //  Serial.println(sliderCharacteristics[index].value());
   servos[index].write(sliderCharacteristics[index].value());
 }
 
@@ -124,4 +127,8 @@ void servo2Activated(BLEDevice central, BLECharacteristic characteristic) {
 
 void servo3Activated(BLEDevice central, BLECharacteristic characteristic) {
   servoActivated(3);
+}
+
+void servo4Activated(BLEDevice central, BLECharacteristic characteristic) {
+  servoActivated(4);
 }

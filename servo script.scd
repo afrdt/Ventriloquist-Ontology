@@ -1,14 +1,14 @@
 (
 var gui, sliders, sliderNum, values, sliderLayout, netAddr;
 
-var sliderNames = ['/slider0', '/slider1', '/slider2', '/slider3'];
+var sliderNames = ['/slider0', '/slider1', '/slider2', '/slider3', '/slider4'];
 
 netAddr = NetAddr("127.0.0.1", 57121);
 
 gui = Window("servoCom", Rect(200, 400, 400, 200))
 .background_(Color.black).front;
 
-sliderNum = 4;
+sliderNum = sliderNames.size;
 
 values = sliderNum.collect({ |i|
 	StaticText()

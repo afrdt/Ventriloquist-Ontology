@@ -57,5 +57,29 @@ To start the venv navigate to the repository in your terminal and run following 
 To exit the pdfparser run following command 
 
 `conda deactivate`
+# ARD_SC_COM
+
+## Installation 
+
+Download bleak and python-osc library 
+
+Inside project directory type the following 
+
+`conda activate env`
+
+Then enter 
+
+`pip install bleak`
+`pip install python-osc`
+
+## Running the project
+
+1) Verify and Upload ServoCallback script to BLE 
+
+2) Open terminal, go to project dir 
+
+3) Run `conda activate env`
+
+4) Run `python3 bridge.py`
 
 

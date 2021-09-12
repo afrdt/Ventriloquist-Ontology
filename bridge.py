@@ -4,7 +4,7 @@ from pythonosc import dispatcher
 from pythonosc import osc_server
 import atexit
 
-ble_address = 'D1316A97-230E-45B8-9BA0-9A308A11D4AD'
+ble_address = 'E1486812-63D0-45C7-A263-D7021401C6AB'
 write_characteristics = [
   '19B10001-E8F2-537E-4F6C-D104768A1214',
   '19B10002-E8F2-537E-4F6C-D104768A1215',
@@ -66,7 +66,7 @@ async def sendToBoard():
       for i in range(num_servos):
         print("servo" + str(i) + " value: " + str(values[i]))
         await client.write_gatt_char(write_characteristics[i], values[i], False)
-        await asyncio.sleep(0.1)
+      await asyncio.sleep(0.1)
 
 
 async def main():

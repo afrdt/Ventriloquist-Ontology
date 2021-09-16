@@ -2,13 +2,37 @@
 (
 var sliders, sliderNum, values, sliderLayout, netAddr;
 var dataPath, lines, wordDict, now, curWord, keyWords, str, sentence, gui, btn, randBtn, killBtn, newTextBtn, textField, nextWord, dropdown, pidList;
+var textDelay, sliderDelay;
+var textDelayVal, sliderDelayVal;
+var sliderBtn;
 var sliderNames = ['/slider0', '/slider1', '/slider2', '/slider3', '/slider4'];
+var slidersActivated = true;
 
 keyWords = ["body", "gender", "cyborg"];
 
 netAddr = NetAddr("127.0.0.1", 57121);
 
 sliderNum = sliderNames.size;
+
+textDelayVal = 0;
+sliderDelayVal = 0;
+
+textDelay = Slider().orientation_(\horizontal);
+sliderDelay = Slider().orientation_(\horizontal);
+
+textDelay.action_({ |slider|
+	var val;
+	val = slider.value;
+	textDelayVal = val.linlin(0, 1, 0, 3);
+	("text delay value: " + textDelayVal).postln;
+});
+
+sliderDelay.action_({ |slider|
+	var val;
+	val = slider.value;
+	sliderDelayVal = val.linlin(0, 1, 0, 3);
+	("slider delay value: " + sliderDelayVal).postln;
+});
 
 pidList = [];
 values = sliderNum.collect({ |i|
@@ -40,6 +64,16 @@ gui = Window("VO", Rect(200, 200, 550, 400), false)
 
 dataPath = PathName("".resolveRelative +/+ "data");
 wordDict = Dictionary.new();
+
+sliderBtn = Button()
+.states_([
+	["Sliders Activated", Color.black, Color.white],
+	["Sliders Deactivated", Color.white, Color.black]
+])
+.action_({
+	slidersActivated = slidersActivated.not;
+	postln("sliders activated: " + slidersActivated)
+});
 
 
 randBtn = Button()
@@ -94,12 +128,19 @@ newTextBtn = Button()
 	["New Text", Color.black, Color.white]
 ])
 .action_({
-	var curWord, curSentence, str;
+	var curWord, curSentence, str, randNum;
 	curWord = dropdown.item;
-	curSentence = wordDict[curWord].choose;
+	randNum = [1, 2, 3].choose;
 	str = "";
-	curSentence.do({ |word|
-		str = str + " " + word;
+	randNum.do({
+		var thisSentence;
+		thisSentence = "";
+		curSentence = wordDict[curWord].choose;
+		curSentence.do({ |word|
+			thisSentence = thisSentence + " " + word;
+		});
+		thisSentence = thisSentence.stripWhiteSpace() + " ";
+		str = str + thisSentence;
 	});
 	str = str.stripWhiteSpace();
 	textField.string_(str)
@@ -112,19 +153,26 @@ dropdown.action_({
 	newTextBtn.valueAction_(0);
 });
 
-
 btn = Button()
 .states_([
 	["Execute", Color.black, Color.white]
 ])
 .minHeight_(50)
 .action_({ |btn|
-	sliders.do({ |slider, i|
-		var val = slider.value.linlin(0, 1, 0, 180).asInt;
-		val.postln;
-		netAddr.sendMsg(sliderNames[i], val)
-	});
-	pidList = pidList ++ ("say" + textField.string).unixCmd;
+	fork {
+		{
+			if (slidersActivated, {
+				sliders.do({ |slider, i|
+					var val = slider.value.linlin(0, 1, 45, 160).asInt;
+					val.postln;
+					netAddr.sendMsg(sliderNames[i], val)
+				});
+			});
+		}.defer(sliderDelayVal);
+		{
+			pidList = pidList ++ ("say" + textField.string).unixCmd;
+		}.defer(textDelayVal);
+	}.defer
 });
 
 gui.layout_(
@@ -133,12 +181,15 @@ gui.layout_(
 			VLayout(
 				randBtn,
 				HLayout(*sliderLayout),
+				sliderBtn,
+				sliderDelay,
 			),
 			VLayout(
 				textField,
 				dropdown,
 				newTextBtn,
-				killBtn
+				killBtn,
+				textDelay
 			),
 		),
 		btn
@@ -202,4 +253,10 @@ OSCdef(\test, { |...args|
 b.sendMsg('/fred', 60)
 
 b.sendMsg(10)
+
+ServerOptions.devices
+
+s.options.device_("Built-in Output")
+
+
 

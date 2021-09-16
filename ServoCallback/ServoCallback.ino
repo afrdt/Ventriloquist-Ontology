@@ -19,6 +19,7 @@
 */
 
 #include <ArduinoBLE.h>
+#include <Arduino_LSM9DS1.h>
 
 BLEService servoService("19B10000-E8F2-537E-4F6C-D104768A1214"); // create service
 
@@ -27,12 +28,19 @@ const int STARTING_PIN = 2;
 
 // Array of BLE Characteristics
 BLEByteCharacteristic sliderCharacteristics[] = {
-  BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite),
-  BLEByteCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1215", BLERead | BLEWrite),
-  BLEByteCharacteristic("19B10003-E8F2-537E-4F6C-D104768A1216", BLERead | BLEWrite),
-  BLEByteCharacteristic("19B10004-E8F2-537E-4F6C-D104768A1217", BLERead | BLEWrite),
-  BLEByteCharacteristic("19B10005-E8F2-537E-4F6C-D104768A1218", BLERead | BLEWrite),
+  BLEByteCharacteristic("7c962495-dd04-496a-87a8-2f837bc3eedd", BLERead | BLEWrite),
+  BLEByteCharacteristic("84e1e552-67a4-4a29-8553-b597c731554f", BLERead | BLEWrite),
+  BLEByteCharacteristic("9bb9e2bc-5799-49ce-a1cf-8385de906f7f", BLERead | BLEWrite),
+  BLEByteCharacteristic("577f2be7-5c69-4591-87bc-67fbf914aeb4", BLERead | BLEWrite),
+  BLEByteCharacteristic("c614f8b8-f751-4197-9eda-53652d882deb", BLERead | BLEWrite),
 };
+
+BLEByteCharacteristic aXBLE = BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-D204768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic aYBLE = BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-E204768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic aZBLE = BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-F204768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic gXBLE = BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-G204768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic gYBLE = BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-E104768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic gZBLE = BLEByteCharacteristic("19B10001-E8F2-537E-4F6C-A204768A1214", BLERead | BLEWrite); 
 
 // Array of servos
 Servo servos[] = {Servo(), Servo(), Servo(), Servo(), Servo()};
@@ -55,6 +63,7 @@ void setup() {
 
   // set the local name peripheral advertises
   BLE.setLocalName("ServoCallback");
+  
   // set the UUID for the service this peripheral advertises
   BLE.setAdvertisedService(servoService);
 
@@ -62,6 +71,9 @@ void setup() {
   for (int i = 0; i < NUM_SERVOS;  i++) {
     servoService.addCharacteristic(sliderCharacteristics[i]);
   }
+
+  servoService.addCharacteristic(aXBLE);
+  aXBLE.writeValue(0);
 
   // add service
   BLE.addService(servoService);
@@ -90,7 +102,14 @@ void setup() {
 
 void loop() {
   // poll for BLE events
+//  float aX, aY, aZ, gX, gY, gZ;
+  
   BLE.poll();
+//  if (IMU.accelerationAvailable()) {
+//    IMU.readAcceleration(aX, aY, aZ);
+//    aXBLE.writeValue(aX);
+//  }
+//  delay(100);
 }
 
 void blePeripheralConnectHandler(BLEDevice central) {

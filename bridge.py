@@ -1,16 +1,17 @@
 import asyncio
+from logging import error
 from bleak import BleakScanner, BleakClient
 from pythonosc import dispatcher
 from pythonosc import osc_server
 import atexit
 
-ble_address = 'E1486812-63D0-45C7-A263-D7021401C6AB'
+# ble_address = 'D1316A97-230E-45B8-9BA0-9A308A11D4AD'
 write_characteristics = [
-  '19B10001-E8F2-537E-4F6C-D104768A1214',
-  '19B10002-E8F2-537E-4F6C-D104768A1215',
-  '19B10003-E8F2-537E-4F6C-D104768A1216',
-  '19B10004-E8F2-537E-4F6C-D104768A1217',
-  '19B10005-E8F2-537E-4F6C-D104768A1218',
+  '7c962495-dd04-496a-87a8-2f837bc3eedd',
+  '84e1e552-67a4-4a29-8553-b597c731554f',
+  '9bb9e2bc-5799-49ce-a1cf-8385de906f7f',
+  '577f2be7-5c69-4591-87bc-67fbf914aeb4',
+  'c614f8b8-f751-4197-9eda-53652d882deb',
 ]
 values = [
   bytearray([int(hex(0), 16)]),
@@ -20,9 +21,6 @@ values = [
   bytearray([int(hex(0), 16)]),
 ]
 num_servos = 5
-# on_value = bytearray(0)
-# off_value = bytearray([0x0])
-# servoUp = False
 
 def servo(newVal, index):
   global values
@@ -43,11 +41,20 @@ def servo3 (unused_addr, val):
 def servo4 (unused_addr, val):
   servo(val, 4)
 
+async def getBLEDevice():
+  print ("scanning for ServoCallback")
+  while True:
+    devices = await BleakScanner.discover(5)
+    bleDeviceFound = False
+    for device in devices:
+      if device.name == "ServoCallback":  
+        print("ServoCallback found")
+        return device
+      if not bleDeviceFound:
+        "ServoCallback not found, rerunning scanner"
+
 async def sendToBoard():
-  devices = await BleakScanner.discover(10)
-  for device in devices:
-    print(device)
-  device = await BleakScanner.find_device_by_address(ble_address, timeout=20.0)
+  device = await getBLEDevice()
   dispatch = dispatcher.Dispatcher()
   dispatch.map('/slider0', servo0)
   dispatch.map('/slider1', servo1)
@@ -60,42 +67,25 @@ async def sendToBoard():
   def exitHandler():
     transport.close()
   atexit.register(exitHandler)
-  print(device)
   async with BleakClient(device) as client:
-    while True:
+    print(client.get_services)
+    isConnected = client.is_connected
+    while isConnected:
       for i in range(num_servos):
-        print("servo" + str(i) + " value: " + str(values[i]))
-        await client.write_gatt_char(write_characteristics[i], values[i], False)
-      await asyncio.sleep(0.1)
+        if (client.is_connected):
+          print("servo" + str(i) + " value: " + str(values[i]))
+          await client.write_gatt_char(write_characteristics[i], values[i], False)
+          await asyncio.sleep(0.1)
+        else: 
+          isConnected = False
+    print("ServoCallback disconnected, reestablishing connection")
+    transport.close()
+    atexit.unregister(exitHandler)
 
 
 async def main():
-  await sendToBoard()
-
-
-          
-
-
-
-
-      # for service in client.services:
-      #   print("" + str(service) + str(service.uuid) + str(service.description))
-      #   for char in service.characteristics:
-      # dispatch = dispatcher.Dispatcher()
-      # dispatch.map("/fred", servo)
-      # server = osc_server.ThreadingOSCUDPServer(("127.0.0.1", 57121), dispatch)
-      # arduinoLoop = asyncio.get_event_loop()
-      # arduinoLoop.run_until_complete(sendToBoard())
-      # server.serve_forever()
-      # print("server running")
-
-      # while True:
-      #   if (servoUp):
-      #     await client.write_gatt_char(write_characteristic, off_value, False)
-      #   else:
-      #     await client.write_gatt_char(write_characteristic, on_value, False)
-      #   await asyncio.sleep(0.1)
-
+  while True: 
+    await sendToBoard()
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())

@@ -1,6 +1,6 @@
 // GUI for controlling text output and actuator positions
 (
-var sliders, sliderNum, values, sliderLayout, netAddr;
+var sliders, sliderNum, values, sliderLayout, netAddr, manualSliders, manualSliderLayouts;
 var dataPath, lines, wordDict, now, curWord, keyWords, str, sentence, gui, btn, randBtn, killBtn, newTextBtn, textField, nextWord, dropdown, pidList;
 var textDelay, sliderDelay;
 var textDelayVal, sliderDelayVal;
@@ -58,7 +58,7 @@ sliderLayout = sliders.collect({ |slider, i|
 });
 
 
-gui = Window("VO", Rect(200, 200, 550, 400), false)
+gui = Window("VO", Rect(200, 200, 550, 600), false)
 .front
 .background_(Color.black);
 
@@ -175,6 +175,27 @@ btn = Button()
 	}.defer
 });
 
+manualSliders = sliderNum.collect({ |i|
+	Slider()
+	.orientation_(\vertical)
+	.action_({ |slider|
+		var val;
+		val = slider.value.linlin(0, 1, 0, 180);
+		val.asInt.postln;
+		netAddr.sendMsg(sliderNames[i], val.asInt)
+	})
+});
+
+manualSliderLayouts = sliders.collect({ |slider, i|
+	VLayout(
+		manualSliders[i],
+		StaticText()
+		.string_("Slider " + i)
+		.stringColor_(Color.white)
+		.align_(\center)
+	)
+});
+
 gui.layout_(
 	VLayout(
 		HLayout(
@@ -192,7 +213,9 @@ gui.layout_(
 				textDelay
 			),
 		),
-		btn
+		btn,
+		HLayout(*manualSliderLayouts)
+
 	)
 );
 )

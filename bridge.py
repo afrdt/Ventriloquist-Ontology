@@ -32,10 +32,10 @@ num_servos = 5
 client = -1
 
 def servo(newVal, index):
-  global client 
+  global client
   global values
   values[index] = bytearray([int(hex(newVal), 16)])
-    
+
 
 def servo0 (unused_addr, val):
   servo(val, 0)
@@ -67,16 +67,15 @@ async def getBLEDevice():
   print ("Scanning for ServoCallback")
   while True:
     devices = await BleakScanner.discover(5)
-    bleDeviceFound = False
     for device in devices:
-      if device.name == "ServoCallback":  
+      if device.name == "ServoCallback":
         print("ServoCallback found")
         return device
-      if not bleDeviceFound:
-        "ServoCallback not found, rerunning scanner"
+    "ServoCallback not found, rerunning scanner"
 
 async def sendToBoard():
   device = await getBLEDevice()
+  print(device)
 
   server = osc_server.AsyncIOOSCUDPServer(("127.0.0.1", 57121), dispatch, asyncio.get_event_loop())
   transport, protocol = await server.create_serve_endpoint()
@@ -98,7 +97,7 @@ async def sendToBoard():
             await client.write_gatt_char(write_characteristics[i], values[i], False)
             prevValues[i] = values[i]
           await asyncio.sleep(0.01)
-        else: 
+        else:
           isConnected = False
     print("ServoCallback disconnected, reestablishing connection")
     transport.close()
@@ -106,10 +105,9 @@ async def sendToBoard():
 
 
 async def main():
-  while True: 
+  while True:
     await sendToBoard()
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
 # servoUp = False
-

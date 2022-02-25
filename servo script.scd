@@ -8,7 +8,7 @@ var sliderBtn;
 var sliderNames = ['/slider0', '/slider1', '/slider2', '/slider3', '/slider4'];
 var slidersActivated = true;
 
-keyWords = ["body", "gender", "cyborg"];
+keyWords = ["body", "gender", "cyborg", "politic"];
 
 netAddr = NetAddr("127.0.0.1", 57121);
 
@@ -107,9 +107,13 @@ dataPath.entries.do({|thisEntry|
 
 	file.do({|thisLine|
 		thisLine.do({|thisWord|
-			if (wordDict.keys.includes(thisWord), {
-				wordDict[thisWord].add(thisLine);
-			})
+			var wordBool;
+			thisWord = thisWord.toLower;
+			wordDict.keys.do({|thisKey|
+				if (thisKey == thisWord || thisWord.contains(thisKey), {
+					wordDict[thisKey].add(thisLine);
+				});
+			});
 		})
 	})
 });
